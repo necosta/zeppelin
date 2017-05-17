@@ -124,6 +124,7 @@ public class HeliumBundleFactory {
 
       NPMInstaller npmInstaller = frontEndPluginFactory.getNPMInstaller(getProxyConfig());
       npmInstaller.setNpmVersion(NPM_VERSION);
+      npmInstaller.setNpmDownloadRoot(defaultNpmRegistryUrl + "/npm/-/");
       npmInstaller.install();
 
       YarnInstaller yarnInstaller = frontEndPluginFactory.getYarnInstaller(getProxyConfig());
