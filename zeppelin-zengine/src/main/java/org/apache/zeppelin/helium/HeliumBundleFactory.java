@@ -47,22 +47,22 @@ import org.apache.zeppelin.conf.ZeppelinConfiguration;
  */
 public class HeliumBundleFactory {
   Logger logger = LoggerFactory.getLogger(HeliumBundleFactory.class);
-  private final String NODE_VERSION = "v6.9.1";
-  private final String NPM_VERSION = "3.10.8";
-  private final String YARN_VERSION = "v0.21.3";
-  public static final String HELIUM_LOCAL_REPO = "helium-bundle";
-  public static final String HELIUM_BUNDLES_DIR = "bundles";
-  public static final String HELIUM_LOCAL_MODULE_DIR = "local_modules";
-  public static final String HELIUM_BUNDLES_SRC_DIR = "src";
-  public static final String HELIUM_BUNDLES_SRC = "load.js";
-  public static final String YARN_CACHE_DIR = "yarn-cache";
-  public static final String PACKAGE_JSON = "package.json";
-  public static final String HELIUM_BUNDLE_CACHE = "helium.bundle.cache.js";
-  public static final String HELIUM_BUNDLE = "helium.bundle.js";
-  public static final String HELIUM_BUNDLES_VAR = "heliumBundles";
-  private final int FETCH_RETRY_COUNT = 2;
-  private final int FETCH_RETRY_FACTOR_COUNT = 1;
-  private final int FETCH_RETRY_MIN_TIMEOUT = 5000; // Milliseconds
+  private static final String NODE_VERSION = "v6.9.1";
+  private static final String NPM_VERSION = "3.10.8";
+  private static final String YARN_VERSION = "v0.21.3";
+  protected static final String HELIUM_LOCAL_REPO = "helium-bundle";
+  private static final String HELIUM_BUNDLES_DIR = "bundles";
+  private static final String HELIUM_LOCAL_MODULE_DIR = "local_modules";
+  private static final String HELIUM_BUNDLES_SRC_DIR = "src";
+  private static final String HELIUM_BUNDLES_SRC = "load.js";
+  private static final String YARN_CACHE_DIR = "yarn-cache";
+  private static final String PACKAGE_JSON = "package.json";
+  private static final String HELIUM_BUNDLE_CACHE = "helium.bundle.cache.js";
+  private static final String HELIUM_BUNDLE = "helium.bundle.js";
+  private static final String HELIUM_BUNDLES_VAR = "heliumBundles";
+  private static final int FETCH_RETRY_COUNT = 2;
+  private static final int FETCH_RETRY_FACTOR_COUNT = 1;
+  private static final int FETCH_RETRY_MIN_TIMEOUT = 5000; // Milliseconds
 
   private final FrontendPluginFactory frontEndPluginFactory;
   private final File nodeInstallationDirectory;
@@ -70,11 +70,11 @@ public class HeliumBundleFactory {
   private final File heliumBundleDirectory;
   private final File heliumLocalModuleDirectory;
   private final File yarnCacheDir;
-  private ZeppelinConfiguration conf;
   private File tabledataModulePath;
   private File visualizationModulePath;
   private File spellModulePath;
   private String defaultNpmRegistryUrl;
+  private String defaultNpmRegistryRepo;
   private Gson gson;
   private boolean nodeAndNpmInstalled = false;
 
@@ -101,8 +101,8 @@ public class HeliumBundleFactory {
     this.heliumBundleDirectory = new File(heliumLocalRepoDirectory, HELIUM_BUNDLES_DIR);
     this.heliumLocalModuleDirectory = new File(heliumLocalRepoDirectory, HELIUM_LOCAL_MODULE_DIR);
     this.yarnCacheDir = new File(heliumLocalRepoDirectory, YARN_CACHE_DIR);
-    this.conf = conf;
-    this.defaultNpmRegistryUrl = conf.getHeliumNpmRegistry();
+    this.defaultNpmRegistryUrl = conf.getHeliumNpmRegistryUrl();
+    this.defaultNpmRegistryRepo = conf.getHeliumNpmRegistryRepo();
 
     nodeInstallationDirectory = (nodeInstallationDir == null) ?
         heliumLocalRepoDirectory : nodeInstallationDir;
@@ -124,7 +124,7 @@ public class HeliumBundleFactory {
 
       NPMInstaller npmInstaller = frontEndPluginFactory.getNPMInstaller(getProxyConfig());
       npmInstaller.setNpmVersion(NPM_VERSION);
-      npmInstaller.setNpmDownloadRoot(defaultNpmRegistryUrl + "/npm/-/");
+      npmInstaller.setNpmDownloadRoot(defaultNpmRegistryUrl + "/" + defaultNpmRegistryRepo + "/-/");
       npmInstaller.install();
 
       YarnInstaller yarnInstaller = frontEndPluginFactory.getYarnInstaller(getProxyConfig());

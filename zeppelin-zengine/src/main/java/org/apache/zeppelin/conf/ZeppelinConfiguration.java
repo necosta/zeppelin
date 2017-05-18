@@ -424,8 +424,12 @@ public class ZeppelinConfiguration extends XMLConfiguration {
     return getRelativeDir(ConfVars.ZEPPELIN_HELIUM_REGISTRY);
   }
 
-  public String getHeliumNpmRegistry() {
+  public String getHeliumNpmRegistryUrl() {
     return getString(ConfVars.ZEPPELIN_HELIUM_NPM_REGISTRY);
+  }
+
+  public String getHeliumNpmRegistryRepo() {
+    return getString(ConfVars.ZEPPELIN_HELIUM_NPM_REGISTRY_REPO);
   }
 
   public String getNotebookAuthorizationPath() {
@@ -644,6 +648,7 @@ public class ZeppelinConfiguration extends XMLConfiguration {
     ZEPPELIN_DEP_LOCALREPO("zeppelin.dep.localrepo", "local-repo"),
     ZEPPELIN_HELIUM_REGISTRY("zeppelin.helium.registry", "helium," + HELIUM_PACKAGE_DEFAULT_URL),
     ZEPPELIN_HELIUM_NPM_REGISTRY("zeppelin.helium.npm.registry", "http://registry.npmjs.org/"),
+    ZEPPELIN_HELIUM_NPM_REGISTRY_REPO("zeppelin.helium.npm.registry.repo", "npm"),
     // Allows a way to specify a ',' separated list of allowed origins for rest and websockets
     // i.e. http://localhost:8080
     ZEPPELIN_ALLOWED_ORIGINS("zeppelin.server.allowed.origins", "*"),
